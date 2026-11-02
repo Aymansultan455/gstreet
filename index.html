@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-main-title">الشارع الكبير - شارع المحطة - منصة المحلات</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary-bg:#0f172a; --street-color:#090d16; --street-line:#f59e0b; --card-bg:#1e293b;
+  --card-border:#334155; --accent-gold:#f59e0b; --text-main:#ffffff; --text-sub:#94a3b8;
+  --btn-bg:linear-gradient(135deg,#f59e0b,#d97706); --btn-text:#000000;
+  --road-w:170px; --sw:22px; --card-min:128px; --card-gap:12px; --card-max:170px;
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Cairo',Tahoma,sans-serif}
+html{scroll-behavior:smooth;max-width:100%;overflow-x:hidden}
+body{
+  background:radial-gradient(ellipse at 50% 0%,rgba(245,158,11,.12),transparent 55%),var(--primary-bg);
+  color:var(--text-main);min-height:100vh;display:flex;flex-direction:column;align-items:center;
+  transition:background-color .3s ease;overflow-x:hidden;max-width:100%;
+}
+
+/* ---------- Navbar ---------- */
+.master-navbar{
+  width:100%;background:rgba(15,23,42,.92);backdrop-filter:blur(10px);
+  border-bottom:2px solid var(--accent-gold);padding:10px 20px;display:flex;justify-content:space-between;
+  align-items:center;position:sticky;top:0;z-index:1000;box-shadow:0 4px 20px rgba(0,0,0,.4);
+}
+.brand-title{font-size:1.3rem;font-weight:800;color:var(--accent-gold);display:flex;align-items:center;gap:10px}
+.nav-live{display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--text-sub);font-weight:700}
+.live-dot{width:9px;height:9px;border-radius:50%;background:#10b981;box-shadow:0 0 0 0 rgba(16,185,129,.7);animation:pulse 1.8s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 9px rgba(16,185,129,0)}100%{box-shadow:0 0 0 0 rgba(16,185,129,0)}}
+
+.floating-cp-btn{
+  position:fixed;bottom:20px;left:20px;background:linear-gradient(135deg,#0284c7,#0369a1);color:#fff;
+  width:55px;height:55px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;
+  box-shadow:0 6px 20px rgba(2,132,199,.5);cursor:pointer;z-index:2000;transition:transform .3s ease;border:2px solid #fff;
+}
+.floating-cp-btn:hover{transform:scale(1.1) rotate(90deg)}
+
+/* ---------- Hero ---------- */
+.hero{width:100%;max-width:1100px;text-align:center;padding:34px 16px 10px;position:relative}
+.hero-badge{display:inline-block;background:rgba(245,158,11,.15);border:1px solid var(--accent-gold);color:var(--accent-gold);
+  padding:4px 16px;border-radius:30px;font-size:.8rem;font-weight:800;letter-spacing:.5px;margin-bottom:12px}
+.neon{font-weight:900;font-size:clamp(2.2rem,8vw,4rem);line-height:1.2;color:#fff;
+  text-shadow:0 0 6px #fff,0 0 14px var(--accent-gold),0 0 32px var(--accent-gold),0 0 64px var(--accent-gold);
+  animation:flicker 6s infinite}
+@keyframes flicker{0%,19%,21%,23%,25%,54%,56%,100%{opacity:1}20%,24%,55%{opacity:.75}}
+.hero-sub{color:var(--text-sub);font-size:1.02rem;margin:10px auto 18px;max-width:640px;font-weight:600}
+.hero-stats{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.stat{background:rgba(30,41,59,.8);border:1px solid var(--card-border);border-radius:14px;padding:8px 22px;min-width:96px}
+.stat b{display:block;font-size:1.6rem;color:var(--accent-gold);font-weight:900}
+.stat span{font-size:.78rem;color:var(--text-sub);font-weight:700}
+.hero-cta{display:inline-block;background:var(--btn-bg);color:var(--btn-text);font-weight:900;border:none;border-radius:40px;
+  padding:11px 30px;font-size:1rem;cursor:pointer;box-shadow:0 8px 24px rgba(245,158,11,.35);transition:.25s}
+.hero-cta:hover{transform:translateY(-3px);filter:brightness(1.08)}
+
+/* ---------- Ticker ---------- */
+.ticker{width:100%;max-width:1100px;margin-top:18px;background:#0b1220;border-top:1px solid var(--card-border);border-bottom:1px solid var(--card-border);
+  overflow:hidden;direction:ltr;white-space:nowrap;color:var(--accent-gold);font-weight:800;font-size:.9rem;padding:7px 0}
+.ticker-track{display:inline-block;padding-left:100%;animation:mq 40s linear infinite reverse;direction:rtl;unicode-bidi:plaintext}
+@keyframes mq{to{transform:translateX(-100%)}}
+
+/* ---------- Street ---------- */
+.street-container{width:100%;max-width:calc(2 * var(--card-max) + var(--road-w) + 24px + 30px);padding:25px 15px 10px;margin-top:6px}
+.street-grid{display:grid;grid-template-columns:minmax(0,1fr) var(--road-w) minmax(0,1fr);gap:14px;position:relative;align-items:stretch;width:100%}
+.street-column{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--card-gap);align-content:start;min-width:0}
+
+.street-road{
+  position:relative;display:flex;border-radius:10px;overflow:hidden;min-height:620px;background:var(--street-color);
+  box-shadow:0 0 0 2px rgba(0,0,0,.55),0 10px 30px rgba(0,0,0,.6),inset 0 0 25px rgba(0,0,0,.9);
+}
+.sidewalk{
+  width:var(--sw);flex:none;position:relative;
+  background:
+    radial-gradient(circle at 50% 14px,#fff3b0 0 2px,rgba(255,214,102,.55) 3px,rgba(255,214,102,0) 11px) 0 0/100% 150px repeat-y,
+    repeating-linear-gradient(0deg,#4b5563 0 38px,#3f4651 38px 40px);
+}
+.sw-left{border-right:3px solid var(--street-line)}
+.sw-right{border-left:3px solid var(--street-line)}
+.asphalt{flex:1;position:relative;background:var(--street-color);
+  background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0 2px,transparent 2px 6px)}
+.center-line{position:absolute;top:0;bottom:0;left:50%;width:7px;transform:translateX(-50%);border-left:2px solid #f5c518;border-right:2px solid #f5c518;opacity:.9}
+.traffic-layer{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.car{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
+.car-in{position:relative;width:100%;height:100%;transform-origin:50% 50%}
+.car-in.down{transform:rotate(180deg)}
+.car-in svg{display:block}
+.beam{position:absolute;top:-56px;height:56px;background:linear-gradient(to top,rgba(255,244,180,.38),rgba(255,244,180,0));
+  clip-path:polygon(18% 100%,82% 100%,100% 0,0 0)}
+.ped{position:absolute;left:0;top:0;width:12px;height:12px;will-change:transform}
+
+/* ---------- Cards ---------- */
+.shop-card,.divider-card{
+  background:var(--card-bg);border:2px solid var(--card-border);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;
+  height:250px;position:relative;box-shadow:0 8px 20px rgba(0,0,0,.3);transition:.3s;
+  animation:cardIn .6s ease both;animation-delay:calc(var(--i,0)*90ms);
+}
+@keyframes cardIn{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+.shop-card:hover,.divider-card:hover{border-color:var(--accent-gold);transform:translateY(-4px);box-shadow:0 14px 30px rgba(245,158,11,.22)}
+.awning{position:absolute;top:0;left:0;right:0;height:22px;z-index:3;
+  background:repeating-linear-gradient(90deg,var(--accent-gold) 0 16px,#fff 16px 32px);
+  border-bottom:4px solid rgba(0,0,0,.28);box-shadow:0 4px 8px rgba(0,0,0,.35)}
+.shop-banner-box{width:100%;height:190px;position:relative;overflow:hidden;background:#000}
+.shop-banner-box img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.shop-card:hover .shop-banner-box img{transform:scale(1.06)}
+.shop-banner-box::after{content:"";position:absolute;top:0;bottom:0;width:40%;left:-60%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.22),transparent);transform:skewX(-20deg);transition:left .8s ease}
+.shop-card:hover .shop-banner-box::after{left:130%}
+.shop-neon{position:absolute;bottom:0;left:0;right:0;text-align:center;font-weight:900;font-size:1.05rem;color:#fff;
+  padding:20px 8px 6px;background:linear-gradient(transparent,rgba(0,0,0,.82));
+  text-shadow:0 0 5px #fff,0 0 12px var(--accent-gold),0 0 22px var(--accent-gold)}
+.shop-status-badge{position:absolute;top:30px;right:8px;padding:3px 9px;border-radius:20px;font-size:.7rem;font-weight:800;backdrop-filter:blur(4px);z-index:2}
+.badge-active{background:rgba(16,185,129,.92);color:#fff}
+.badge-paused{background:rgba(239,68,68,.92);color:#fff}
+.btn-enter-shop{
+  background:var(--btn-bg);color:var(--btn-text);font-weight:800;border:none;height:60px;padding:0 15px;font-size:.98rem;cursor:pointer;
+  width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  box-shadow:inset 0 2px 5px rgba(255,255,255,.2);transition:.2s;
+}
+.btn-enter-shop:hover{filter:brightness(1.1)}
+.btn-enter-shop .desc-sub{font-size:.72rem;opacity:.85;font-weight:600;margin-top:2px}
+.divider-ticker-bar{background:#0f172a;color:var(--accent-gold);font-size:.75rem;font-weight:bold;padding:2px 5px;text-align:center;
+  border-top:1px solid var(--card-border);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.divider-title-bar{background:#334155;color:#fff;height:45px;display:flex;align-items:center;justify-content:center}
+.divider-title-bar span{color:var(--accent-gold);font-weight:800;font-size:.88rem}
+
+.footer{width:100%;text-align:center;color:var(--text-sub);font-size:.8rem;padding:24px 10px 80px;font-weight:600}
+.footer b{color:var(--accent-gold)}
+
+/* ---------- Modals ---------- */
+.modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(6px);z-index:9999;justify-content:center;align-items:center}
+.app-window-modal{width:100%;max-width:480px;height:94vh;background:#fff;border-radius:20px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 40px rgba(0,0,0,.6)}
+.app-window-header{background:#1e293b;color:#fff;padding:12px 18px;display:flex;justify-content:space-between;align-items:center;font-weight:bold}
+.close-app-btn{background:rgba(255,255,255,.15);border:none;color:#fff;font-size:1.1rem;width:32px;height:32px;border-radius:50%;cursor:pointer}
+.close-app-btn:hover{background:#ef4444}
+#app-iframe{width:100%;flex:1;min-height:0;border:none;background:#fff}
+
+.cp-container{width:100%;max-width:900px;max-height:90vh;background:#1e293b;color:#fff;border-radius:16px;overflow-y:auto;padding:25px;border:1px solid #334155}
+.cp-header{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--accent-gold);padding-bottom:12px;margin-bottom:20px}
+.cp-section{background:#0f172a;border-radius:12px;padding:18px;margin-bottom:20px;border:1px solid #334155}
+.cp-section h3{color:var(--accent-gold);font-size:1.1rem;margin-bottom:15px}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px}
+.form-group{margin-bottom:12px}
+.form-group label{display:block;font-size:.85rem;color:#cbd5e1;margin-bottom:5px;font-weight:bold}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:9px;background:#1e293b;border:1px solid #475569;color:#fff;border-radius:6px;font-size:.9rem}
+.btn-action-cp{background:#10b981;color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:.9rem}
+.btn-action-cp:hover{filter:brightness(1.1)}
+.btn-danger-cp{background:#ef4444}
+.btn-warning-cp{background:#f59e0b;color:#000}
+.store-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:.85rem}
+.store-table th,.store-table td{padding:10px;border:1px solid #334155;text-align:center}
+.store-table th{background:#1e293b;color:var(--accent-gold)}
+
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:#0f172a;color:#fff;border:1px solid var(--accent-gold);
+  padding:10px 20px;border-radius:30px;font-weight:700;font-size:.9rem;opacity:0;pointer-events:none;transition:.3s;z-index:20000;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%)}
+
+/* ---- كروت مربعة صغيرة ---- */
+.shop-card{aspect-ratio:1/1;height:auto;min-width:0}
+.shop-card .shop-banner-box{flex:1 1 0;min-height:0;height:auto}
+.shop-card .btn-enter-shop{height:auto;min-height:34px;padding:6px;font-size:.82rem;flex:none}
+.shop-card .desc-sub{display:none}
+.awning{height:14px;background:repeating-linear-gradient(90deg,var(--accent-gold) 0 11px,#fff 11px 22px);border-bottom-width:3px}
+.shop-neon{font-size:.8rem;line-height:1.25;padding:14px 6px 5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.shop-status-badge{top:20px;right:6px;font-size:.62rem;padding:2px 7px}
+.divider-card{grid-column:1/-1;height:auto;min-width:0}
+.divider-card .shop-banner-box{height:96px;flex:none}
+.divider-ticker-bar{white-space:normal;font-size:.68rem;line-height:1.35;padding:4px 6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;max-height:calc(2.7em + 8px)}
+.divider-title-bar{height:auto;min-height:30px;padding:4px 6px;text-align:center}
+.divider-title-bar span{font-size:.78rem}
+.street-grid.no-anim .shop-card,.street-grid.no-anim .divider-card{animation:none}
+.street-grid.no-anim .flash{animation:flash 1.1s ease 3}
+@keyframes flash{50%{box-shadow:0 0 0 4px var(--accent-gold),0 0 30px var(--accent-gold)}}
+
+@media (max-width:900px){:root{--road-w:120px;--sw:16px;--card-min:120px}}
+@media (max-width:768px){
+  :root{--road-w:84px;--sw:9px;--card-min:104px;--card-gap:8px}
+  .street-grid{gap:6px}
+  .street-container{padding:18px 8px 6px}
+  .shop-card .btn-enter-shop{min-height:30px;font-size:.74rem;padding:4px}
+  .shop-neon{font-size:.7rem;padding:12px 4px 4px}
+  .awning{height:10px}
+  .shop-status-badge{top:14px;right:4px;font-size:.55rem;padding:1px 5px}
+  .divider-card .shop-banner-box{height:74px}
+  .nav-live{display:none}
+}
+.shop-banner-box img{position:absolute;inset:0}
+.badge-soon{background:rgba(100,116,139,.92);color:#fff}
+@media (max-width:520px){
+  .app-window-modal{max-width:100%;height:100vh;height:100dvh;border-radius:0}
+  .cp-container{max-height:100vh;max-height:100dvh;border-radius:0;padding:14px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<div class="master-navbar">
+  <div class="brand-title"><span>🏪</span><span id="brand-header-text">الشارع الكبير - شارع المحطة</span></div>
+  <div class="nav-live"><span class="live-dot"></span><span id="nav-open-count">—</span></div>
+</div>
+
+<div class="floating-cp-btn" id="cp-open-btn" title="لوحة تحكم المشروع">⚙️</div>
+
+<div id="storage-banner" style="display:none;width:100%;max-width:1100px;background:#7f1d1d;color:#fff;padding:10px 14px;font-size:.82rem;line-height:1.7;font-weight:700;text-align:center;position:relative">
+  ⚠️ هذا الرابط لا يحفظ التعديلات بعد إغلاق الصفحة (مثل فتح الملف مباشرة من واتساب). احفظ الملف على الهاتف وافتحه من متصفح Chrome، أو ارفعه على استضافة مثل Netlify. التعديلات تظهر الآن لكنها ستضيع عند إغلاق الصفحة.
+  <button type="button" onclick="this.parentNode.style.display='none'" style="position:absolute;top:6px;left:8px;background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:50%;width:24px;height:24px;cursor:pointer">✕</button>
+</div>
+
+<header class="hero">
+  <div class="hero-badge">🌍 منصة المحلات</div>
+  <h1 class="neon" id="hero-title">الشارع الكبير</h1>
+  <p class="hero-sub">جولة في شارع الجمهورية تسوّق واعرف الأسعار والعروض واطلب عبر الواتساب بضغطة زر</p>
+</header>
+
+<div class="ticker"><span class="ticker-track" id="ticker-track"></span></div>
+
+<main class="street-container" id="street">
+  <div class="street-grid">
+    <div class="street-column" id="right-column-items"></div>
+
+    <div class="street-road" id="street-road" aria-hidden="true">
+      <div class="sidewalk sw-left"></div>
+      <div class="asphalt"><div class="center-line"></div></div>
+      <div class="sidewalk sw-right"></div>
+      <div class="traffic-layer" id="traffic-layer"></div>
+    </div>
+
+    <div class="street-column" id="left-column-items"></div>
+  </div>
+</main>
+
+<footer class="footer">تصميم وتطوير: <b>AS-ayman</b></footer>
+
+<!-- App Modal -->
+<div class="modal-backdrop" id="app-modal">
+  <div class="app-window-modal">
+    <div class="app-window-header">
+      <span id="app-modal-title">المحل</span>
+      <button class="close-app-btn" id="app-close-btn">✕</button>
+    </div>
+    <iframe id="app-iframe" title="تطبيق المحل"></iframe>
+  </div>
+</div>
+
+<!-- Master CP Modal -->
+<div class="modal-backdrop" id="master-cp-modal">
+  <div class="cp-container">
+    <div class="cp-header">
+      <h2>⚙️ لوحة تحكم مدير المشروع</h2>
+      <button class="close-app-btn" onclick="closeMasterCP()">✕</button>
+    </div>
+
+    <div id="cp-storage-note" style="display:none;background:#7f1d1d;color:#fff;padding:10px 14px;border-radius:10px;margin-bottom:16px;font-size:.85rem;line-height:1.7;"></div>
+    <div class="cp-section">
+      <h3>🏷️ اسم المشروع</h3>
+      <div class="form-grid"><div class="form-group"><label>اسم المشروع:</label><input type="text" id="cp-project-name"></div></div>
+      <button class="btn-action-cp" onclick="saveProjectName()">حفظ الاسم 💾</button>
+    </div>
+
+    <div class="cp-section">
+      <h3>🎨 تخصيص الألوان</h3>
+      <div class="form-grid">
+        <div class="form-group"><label>خلفية الشارع الرئيسية:</label><input type="color" id="cp-color-bg"></div>
+        <div class="form-group"><label>لون الشارع الأوسط:</label><input type="color" id="cp-color-street"></div>
+        <div class="form-group"><label>خطوط التمييز:</label><input type="color" id="cp-color-accent"></div>
+        <div class="form-group"><label>خلفية الكروت:</label><input type="color" id="cp-color-card"></div>
+      </div>
+      <button class="btn-action-cp" onclick="saveThemeSettings()">حفظ الألوان 🖌️</button>
+    </div>
+
+    <div class="cp-section">
+      <h3>🔑 كلمة سر لوحة التحكم العامة</h3>
+      <div class="form-grid"><div class="form-group"><label>كلمة السر:</label><input type="text" id="cp-master-pass"></div></div>
+      <button class="btn-action-cp btn-warning-cp" onclick="saveMasterPass()">تحديث كلمة السر 🔐</button>
+    </div>
+
+    <div class="cp-section">
+      <h3>➕ إضافة محل جديد</h3>
+      <div class="form-grid">
+        <div class="form-group"><label>اسم المحل:</label><input type="text" id="new-shop-name" placeholder="اسم المحل..."></div>
+        <div class="form-group"><label>الصف:</label><select id="new-shop-side"><option value="right">الصف الأيمن</option><option value="left">الصف الأيسر</option></select></div>
+        <div class="form-group"><label>مكان الإضافة:</label><select id="new-shop-pos"><option value="end">أسفل الصف</option><option value="start">أعلى الصف</option></select></div>
+        <div class="form-group">
+          <label>صورة البنر (رفع من الجهاز أو كاميرا 📷):</label>
+          <div style="display:flex;gap:6px;">
+            <input type="text" id="new-shop-banner" placeholder="رابط البنر...">
+            <input type="file" accept="image/*" style="display:none;" id="new-shop-file" onchange="convertImageToURL(event,'new-shop-banner')">
+            <button type="button" class="btn-action-cp" style="padding:6px 12px;font-size:.75rem;" onclick="document.getElementById('new-shop-file').click()">📁 رفع / 📷</button>
+          </div>
+        </div>
+        <div class="form-group"><label>وصف المحل:</label><input type="text" id="new-shop-desc" placeholder="الوصف المختصر..."></div>
+        <div class="form-group"><label>نص زر الدخول:</label><input type="text" id="new-shop-btn" value="استكشف 🔍"></div>
+        <div class="form-group"><label>رابط خارجي (اختياري):</label><input type="text" id="new-shop-link" placeholder="https://..."></div>
+      </div>
+      <button class="btn-action-cp" onclick="addNewShop()">إضافة المحل 🚀</button>
+    </div>
+
+    <div class="cp-section">
+      <h3>🖼️ إضافة فاصل ترويجي</h3>
+      <div class="form-grid">
+        <div class="form-group"><label>عنوان الفاصل:</label><input type="text" id="new-div-title" placeholder="العنوان..."></div>
+        <div class="form-group"><label>الصف:</label><select id="new-div-side"><option value="right">الصف الأيمن</option><option value="left">الصف الأيسر</option></select></div>
+        <div class="form-group"><label>مكان الإضافة:</label><select id="new-div-pos"><option value="end">أسفل الصف</option><option value="start">أعلى الصف</option></select></div>
+        <div class="form-group">
+          <label>صورة الفاصل (رفع أو كاميرا 📷):</label>
+          <div style="display:flex;gap:6px;">
+            <input type="text" id="new-div-img" placeholder="رابط الصورة...">
+            <input type="file" accept="image/*" style="display:none;" id="new-div-file" onchange="convertImageToURL(event,'new-div-img')">
+            <button type="button" class="btn-action-cp" style="padding:6px 12px;font-size:.75rem;" onclick="document.getElementById('new-div-file').click()">📁 رفع / 📷</button>
+          </div>
+        </div>
+        <div class="form-group"><label>النص الفرعي:</label><input type="text" id="new-div-desc" placeholder="الوصف تحت الصورة..."></div>
+        <div class="form-group"><label>شريط الفاصل النصي:</label><input type="text" id="new-div-ticker" placeholder="نص الشريط بالفاصل..."></div>
+      </div>
+      <button class="btn-action-cp" onclick="addNewDivider()">إضافة الفاصل 🌟</button>
+    </div>
+
+    <div class="cp-section">
+      <h3>💾 نسخة احتياطية (تصدير / استيراد)</h3>
+      <p style="color:#94a3b8;font-size:.82rem;margin-bottom:10px;">احفظ كل بيانات الشارع والمحلات في ملف، أو استرجعها على جهاز/متصفح آخر.</p>
+      <button class="btn-action-cp" onclick="exportAllData()">⬇ تصدير البيانات</button>
+      <input type="file" id="import-file" accept=".json,application/json" style="display:none;" onchange="importAllData(event)">
+      <button class="btn-action-cp btn-warning-cp" onclick="document.getElementById('import-file').click()">⬆ استيراد بيانات</button>
+    </div>
+
+    <div class="cp-section">
+      <h3>📋 إدارة وترتيب عناصر الشارع (محلات وفواصل)</h3>
+      <div style="overflow-x:auto;">
+        <table class="store-table">
+          <thead><tr><th>#</th><th>العنصر</th><th>النوع</th><th>الصف</th><th>كلمة السر</th><th>الحالة</th><th>الترتيب</th><th>إجراءات</th></tr></thead>
+          <tbody id="cp-items-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="cp-section" id="edit-shop-box" style="display:none;">
+      <h3>✏️ تعديل المحل (<span id="edit-shop-title-label"></span>)</h3>
+      <input type="hidden" id="edit-shop-id">
+      <div class="form-grid">
+        <div class="form-group"><label>اسم المحل:</label><input type="text" id="edit-shop-name"></div>
+        <div class="form-group"><label>الصف:</label><select id="edit-shop-side"><option value="right">اليمين</option><option value="left">الشمال</option></select></div>
+        <div class="form-group">
+          <label>صورة البنر (رفع أو كاميرا 📷):</label>
+          <div style="display:flex;gap:6px;">
+            <input type="text" id="edit-shop-banner">
+            <input type="file" accept="image/*" style="display:none;" id="edit-shop-file" onchange="convertImageToURL(event,'edit-shop-banner')">
+            <button type="button" class="btn-action-cp" style="padding:6px 12px;font-size:.75rem;" onclick="document.getElementById('edit-shop-file').click()">📁 رفع / 📷</button>
+          </div>
+        </div>
+        <div class="form-group"><label>وصف المحل:</label><input type="text" id="edit-shop-desc"></div>
+        <div class="form-group"><label>نص زر الدخول:</label><input type="text" id="edit-shop-btn"></div>
+        <div class="form-group"><label>رابط خارجي:</label><input type="text" id="edit-shop-link"></div>
+        <div class="form-group"><label>كلمة السر الخاصة:</label><input type="text" id="edit-shop-pass"></div>
+        <div class="form-group"><label>الحالة:</label><select id="edit-shop-status"><option value="active">يعمل</option><option value="paused">صيانة</option></select></div>
+        <div class="form-group" style="grid-column:1/-1;"><label>رسالة الصيانة:</label><input type="text" id="edit-shop-pause-msg"></div>
+      </div>
+      <button class="btn-action-cp" onclick="saveShopEdit()">حفظ التعديلات 💾</button>
+      <button class="btn-action-cp btn-danger-cp" onclick="cancelShopEdit()">إلغاء</button>
+    </div>
+
+    <div class="cp-section" id="edit-div-box" style="display:none;">
+      <h3>✏️ تعديل الفاصل</h3>
+      <input type="hidden" id="edit-div-id">
+      <div class="form-grid">
+        <div class="form-group"><label>العنوان:</label><input type="text" id="edit-div-title"></div>
+        <div class="form-group"><label>الصف:</label><select id="edit-div-side"><option value="right">اليمين</option><option value="left">الشمال</option></select></div>
+        <div class="form-group">
+          <label>الصورة (رفع أو كاميرا 📷):</label>
+          <div style="display:flex;gap:6px;">
+            <input type="text" id="edit-div-img">
+            <input type="file" accept="image/*" style="display:none;" id="edit-div-file" onchange="convertImageToURL(event,'edit-div-img')">
+            <button type="button" class="btn-action-cp" style="padding:6px 12px;font-size:.75rem;" onclick="document.getElementById('edit-div-file').click()">📁 رفع / 📷</button>
+          </div>
+        </div>
+        <div class="form-group"><label>النص الفرعي:</label><input type="text" id="edit-div-desc"></div>
+        <div class="form-group"><label>شريط الفاصل النصي:</label><input type="text" id="edit-div-ticker"></div>
+      </div>
+      <button class="btn-action-cp" onclick="saveDividerEdit()">حفظ الفاصل 💾</button>
+      <button class="btn-action-cp btn-danger-cp" onclick="cancelDividerEdit()">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- =========================================================
+     قالب تطبيق المحل (يُحقن داخل iframe عند الضغط على زر المحل)
+     ========================================================= -->
+<template id="shop-app-tpl">
+<style>
+:root{--primary-color:#d97706;--secondary-color:#1e293b;--accent-color:#ef4444;--bg-color:#f1f5f9;--text-color:#334155}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Cairo','Segoe UI',Tahoma,sans-serif}
+body{background:var(--bg-color);color:var(--text-color);line-height:1.6}
+#app-container{max-width:480px;margin:0 auto;background:#fff;min-height:100vh;position:relative;padding-bottom:70px}
+.header{background:var(--secondary-color);color:#fff;padding:0 15px;height:52px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:900}
+.h-btns{display:flex;gap:6px}
+.header-icon-btn{background:rgba(255,255,255,.12);border:none;color:#fff;font-size:1.05rem;cursor:pointer;padding:6px 10px;border-radius:8px;position:relative}
+.cart-badge-count{position:absolute;top:-4px;right:-4px;background:var(--accent-color);color:#fff;font-size:.65rem;padding:1px 5px;border-radius:10px;font-weight:bold}
+.sticky-top-section{position:sticky;top:52px;z-index:850;background:#fff;box-shadow:0 4px 10px rgba(0,0,0,.06)}
+.banner-container{width:100%;height:120px;overflow:hidden;position:relative;background:#000}
+.banner-container img{width:100%;height:100%;object-fit:cover}
+.banner-text{position:absolute;bottom:0;background:linear-gradient(transparent,rgba(0,0,0,.85));width:100%;color:#fff;padding:10px 8px 6px;text-align:center;font-size:.95rem;font-weight:bold}
+.marquee-bar{background:var(--primary-color);color:#fff;padding:5px 0;font-size:.8rem;font-weight:bold;overflow:hidden;direction:ltr;white-space:nowrap}
+.marquee-bar span{display:inline-block;padding-left:100%;animation:mq 16s linear infinite reverse;direction:rtl;unicode-bidi:plaintext}
+@keyframes mq{to{transform:translateX(-100%)}}
+.backbar{display:flex;align-items:center;gap:8px;background:#f8fafc;border-top:1px solid #e2e8f0;padding:5px 10px}
+.btn-back-top{background:var(--secondary-color);color:#fff;border:none;border-radius:20px;padding:4px 14px;font-size:.8rem;font-weight:800;cursor:pointer}
+.backbar .crumb{font-size:.75rem;color:#64748b;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.categories-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:12px}
+.cat-card{background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08);text-align:center;cursor:pointer;border:1px solid #e2e8f0;transition:.2s}
+.cat-card:active{transform:scale(.96)}
+.cat-card img{width:100%;height:85px;object-fit:cover;display:block}
+.cat-card h4{font-size:.8rem;padding:6px 2px;color:var(--secondary-color);font-weight:bold}
+.view-section{display:none;padding:12px}
+.view-section.active{display:block}
+.sub-card{display:flex;background:#fff;border-radius:10px;overflow:hidden;margin-bottom:10px;border:1px solid #f1f5f9;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.sub-card img{width:100px;height:100px;object-fit:cover;flex:none}
+.sub-info{padding:8px;flex:1;display:flex;flex-direction:column;justify-content:space-between;min-width:0}
+.sub-info h5{font-size:.92rem;color:var(--secondary-color);font-weight:bold}
+.sub-info p{font-size:.75rem;color:#64748b}
+.row{display:flex;justify-content:space-between;align-items:center;gap:6px}
+.price{color:var(--accent-color);font-weight:bold;font-size:.92rem}
+.btn-order{background:#16a34a;color:#fff;border:none;padding:6px 10px;border-radius:6px;cursor:pointer;font-size:.75rem;font-weight:bold}
+.btn-cart-add{background:#fff;color:var(--primary-color);border:1.5px solid var(--primary-color);padding:4px 8px;border-radius:6px;cursor:pointer;font-size:.75rem;font-weight:bold}
+.row .btns{display:flex;gap:4px;align-items:center}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-top:1px solid #cbd5e1;display:flex;justify-content:space-around;padding:8px 0;z-index:1000}
+.nav-item{background:none;border:none;cursor:pointer;color:#64748b;font-size:.8rem;font-weight:700}
+.form-group{margin-bottom:10px}
+.form-group label{display:block;font-size:.8rem;margin-bottom:3px;font-weight:bold}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:8px;border:1px solid #cbd5e1;border-radius:6px;font-size:.85rem}
+.btn-action{background:var(--primary-color);color:#fff;border:none;padding:9px;width:100%;border-radius:6px;font-weight:bold;cursor:pointer;margin-top:6px}
+.btn-back{background:#64748b;width:auto;padding:4px 12px;margin-bottom:10px}
+.btn-danger{background:#ef4444}
+.btn-blue{background:#0284c7}
+.btn-green{background:#10b981}
+#cart-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9998}
+#cart-drawer{display:none;position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;max-height:92vh;background:#fff;border-bottom-left-radius:20px;border-bottom-right-radius:20px;z-index:9999;box-shadow:0 10px 25px rgba(0,0,0,.25);flex-direction:column;overflow:hidden}
+.cart-row{display:flex;justify-content:space-between;align-items:center;background:#f8fafc;padding:8px;border-radius:8px;margin-bottom:6px;font-size:.8rem;gap:6px}
+.cart-row .cr-info span{color:var(--accent-color);display:block}
+.cr-ctl{display:flex;align-items:center;gap:6px}
+.cr-ctl button{width:26px;height:26px;border-radius:50%;border:1px solid #cbd5e1;background:#fff;cursor:pointer;font-weight:bold}
+.prod-edit{background:#f1f5f9;padding:8px;border-radius:8px;margin-bottom:8px;border:1px solid #cbd5e1}
+.prod-edit label{font-size:.7rem}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:8px 18px;border-radius:30px;font-size:.82rem;font-weight:700;opacity:0;pointer-events:none;transition:.3s;z-index:20000;max-width:90vw;text-align:center}
+.toast.show{opacity:1}
+</style>
+
+<div id="app-container">
+  <div class="header">
+    <div>🏪 <strong id="shop-title"></strong></div>
+    <div class="h-btns">
+      <button class="header-icon-btn" data-act="home" aria-label="الرئيسية">🏠</button>
+      <button class="header-icon-btn" data-act="cart" aria-label="السلة">🛒<span class="cart-badge-count" id="cart-badge">0</span></button>
+      <button class="header-icon-btn" data-act="login" aria-label="لوحة التحكم">⚙️</button>
+    </div>
+  </div>
+
+  <div class="sticky-top-section">
+    <div class="banner-container">
+      <img id="main-banner-img" alt="بنر المحل">
+      <div class="banner-text" id="main-banner-title"></div>
+    </div>
+    <div class="marquee-bar" id="marquee-bar"><span id="marquee-text"></span></div>
+    <div class="backbar"><button class="btn-back-top" data-act="back">↩ عودة</button><span class="crumb" id="crumb"></span></div>
+  </div>
+
+  <div id="cart-backdrop" data-act="cart-close"></div>
+  <div id="cart-drawer">
+    <div style="background:var(--secondary-color);color:#fff;padding:12px 15px;display:flex;justify-content:space-between;align-items:center;">
+      <h3>🛒 سلة المشتريات</h3>
+      <button data-act="cart-close" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;">✕</button>
+    </div>
+    <div style="padding:15px;overflow-y:auto;">
+      <div id="cart-items-list" style="margin-bottom:12px;"></div>
+      <div style="background:#f1f5f9;padding:8px;border-radius:6px;margin-bottom:12px;display:flex;justify-content:space-between;font-weight:bold;">
+        <span>الإجمالي:</span><span id="cart-total-price" style="color:var(--accent-color);">0 ج.م</span>
+      </div>
+      <div class="form-group"><label>اسم حضرتك:</label><input type="text" id="customer-name-input" placeholder="أدخل اسمك الكريم..."></div>
+      <button class="btn-action btn-green" data-act="send">إرسال الطلب عبر الواتساب 🚀</button>
+    </div>
+  </div>
+
+  <div id="home-view" class="view-section active"><div class="categories-grid" id="categories-grid"></div></div>
+
+  <div id="sub-view" class="view-section">
+    <h3 id="current-cat-title" style="margin-bottom:10px;border-bottom:2px solid var(--primary-color);"></h3>
+    <div id="subtypes-list"></div>
+  </div>
+
+  <div id="login-view" class="view-section">
+    <h3>تسجيل دخول لوحة تحكم المحل</h3>
+    <div class="form-group" style="margin-top:15px;"><label>كلمة المرور:</label><input type="password" id="login-password" placeholder="أدخل كلمة المرور..."></div>
+    <button class="btn-action" data-act="verify">دخول</button>
+  </div>
+
+  <div id="admin-cp-view" class="view-section">
+    <h3 style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <span>لوحة تحكم المحل</span>
+      <button data-act="add-cat" style="background:#0284c7;color:#fff;border:none;padding:4px 8px;border-radius:4px;font-size:.75rem;cursor:pointer;">+ إضافة قسم</button>
+    </h3>
+    <div class="form-group"><label>📲 رقم واتساب زر «اطلب الآن» وسلة الطلبات:</label><input type="text" id="cp-whatsapp-num" placeholder="201011337320" inputmode="tel"><small style="color:#64748b;font-size:.72rem;">اكتبه بالصيغة الدولية بدون + (مثال 201011337320) أو محلياً (01011337320). كل أزرار «اطلب الآن» في هذا المحل تُرسل لهذا الرقم.</small></div>
+    <div class="form-group"><label>نص الشريط المتحرك:</label><input type="text" id="cp-marquee-input"></div>
+    <div class="form-group"><label>عنوان البنر:</label><input type="text" id="cp-banner-title"></div>
+    <div class="form-group">
+      <label>صورة البنر (رفع أو كاميرا 📷 أو رابط):</label>
+      <div style="display:flex;gap:6px;">
+        <input type="text" id="cp-banner-img">
+        <input type="file" accept="image/*" style="display:none;" id="cp-banner-file" data-upload="cp-banner-img">
+        <button type="button" class="btn-action" style="width:auto;margin:0;padding:4px 10px;" data-act="pick" data-for="cp-banner-file">📁 / 📷</button>
+      </div>
+    </div>
+    <button class="btn-action btn-blue" style="margin-bottom:12px;" data-act="save-general">حفظ إعدادات المحل العامة</button>
+
+    <div class="form-group"><label>اختر القسم للتعديل:</label><select id="cp-cat-select"></select></div>
+    <div class="form-group"><label>اسم القسم:</label><input type="text" id="cp-cat-name"></div>
+    <div class="form-group">
+      <label>صورة القسم (رفع أو كاميرا 📷 أو رابط):</label>
+      <div style="display:flex;gap:6px;">
+        <input type="text" id="cp-cat-img">
+        <input type="file" accept="image/*" style="display:none;" id="cp-cat-file" data-upload="cp-cat-img">
+        <button type="button" class="btn-action" style="width:auto;margin:0;padding:4px 10px;" data-act="pick" data-for="cp-cat-file">📁 / 📷</button>
+      </div>
+    </div>
+    <button class="btn-action btn-danger" data-act="del-cat">حذف القسم بالكامل 🗑️</button>
+
+    <hr style="margin:12px 0;">
+    <div class="row" style="margin-bottom:6px;">
+      <h4>منتجات القسم:</h4>
+      <button class="btn-action btn-blue" style="width:auto;padding:3px 8px;font-size:.7rem;margin:0;" data-act="add-prod">+ إضافة منتج</button>
+    </div>
+    <div id="cp-products-editor" style="max-height:260px;overflow-y:auto;"></div>
+    <button class="btn-action btn-green" style="margin-top:12px;" data-act="save-admin">حفظ التعديلات</button>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="nav-item" data-act="home">🏠 الرئيسية</button>
+    <button class="nav-item" data-act="cart">🛒 السلة</button>
+    <button class="nav-item" data-act="login">⚙️ لوحة</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  'use strict';
+  var CFG = window.SHOP_CFG || {id:'shop',name:'المحل',banner:''};
+  var KEY = 'shop_app_data_' + CFG.id;
+  var MASTER_KEY = 'al_share3_al_kabeer_master_v5';
+  var mem = (function(){ try{ if(window.parent && window.parent.__shopMem) return window.parent.__shopMem; }catch(e){} return {}; })();
+  var cart = [];
+  var adminCatId = null;
+  var currentCatId = null;
+  var stack = ['home-view'];
+  var IMG_DEFAULT = 'https://images.unsplash.com/photo-1543353071-10c8ba85a904?auto=format&fit=crop&w=400&q=80';
+  var FALLBACK = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#334155"/><stop offset="1" stop-color="#0f172a"/></linearGradient></defs><rect width="400" height="300" fill="url(#g)"/><text x="200" y="165" font-size="64" text-anchor="middle">🛍️</text></svg>');
+
+  function $(id){ return document.getElementById(id); }
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function lsGet(k){ if(mem[k] != null) return mem[k]; try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function lsSet(k,v){ mem[k] = v; try{ localStorage.setItem(k,v); return true; }catch(e){ return false; } }
+  var toastTimer;
+  function toast(m){ var t=$('toast'); t.textContent=m; t.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(function(){ t.classList.remove('show'); },2200); }
+  function fmt(n){ return Math.round(n*100)/100; }
+  function parsePrice(s){
+    s = String(s||'').replace(/[٠-٩]/g,function(d){ return '٠١٢٣٤٥٦٧٨٩'.indexOf(d); }).replace(/٫/g,'.').replace(/[^\d.]/g,'');
+    var n = parseFloat(s); return isNaN(n) ? 0 : n;
+  }
+
+  function defaultData(){
+    return {
+      whatsapp:'201011337320',
+      marquee:'🔥 أهلاً بكم في ' + CFG.name + ' - تصفح أقسامنا واطلب الآن! 🚀',
+      bannerImg: CFG.banner || IMG_DEFAULT,
+      bannerTitle:'أهلاً بكم في ' + CFG.name,
+      categories:[{ id:1, name:'القسم الرئيسي', img:'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=400&q=80',
+        subtypes:[{ name:'منتج تجريبي 1', desc:'وصف المنتج', price:'50 ج.م', img:'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=400&q=80' }] }]
+    };
+  }
+  function getData(){
+    var raw = lsGet(KEY), d = null;
+    if(raw){ try{ d = JSON.parse(raw); }catch(e){} }
+    if(!d || !Array.isArray(d.categories)){ d = defaultData(); lsSet(KEY, JSON.stringify(d)); }
+    return d;
+  }
+  function saveData(d){ if(!lsSet(KEY, JSON.stringify(d))) toast('⚠️ تعذّر الحفظ الدائم (المساحة ممتلئة)'); }
+
+  function readImage(file, targetId){
+    var fr = new FileReader();
+    fr.onload = function(ev){
+      var img = new Image();
+      img.onload = function(){
+        var r = Math.min(1, 800/img.width), c = document.createElement('canvas');
+        c.width = Math.round(img.width*r); c.height = Math.round(img.height*r);
+        c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+        $(targetId).value = c.toDataURL('image/jpeg',0.78); toast('تم رفع الصورة ✔');
+      };
+      img.onerror = function(){ $(targetId).value = ev.target.result; toast('تم رفع الصورة ✔'); };
+      img.src = ev.target.result;
+    };
+    fr.readAsDataURL(file);
+  }
+
+  function switchView(id){
+    var v = document.querySelectorAll('.view-section');
+    for(var i=0;i<v.length;i++) v[i].classList.remove('active');
+    $(id).classList.add('active');
+    window.scrollTo(0,0);
+  }
+  var TITLES = {'home-view':'الرئيسية','login-view':'دخول لوحة المحل','admin-cp-view':'لوحة تحكم المحل'};
+  function updateCrumb(){
+    var id = stack[stack.length-1];
+    $('crumb').textContent = id === 'sub-view' ? ($('current-cat-title').textContent || '') : (TITLES[id] || '');
+  }
+  function go(id, replace){
+    if(replace) stack.pop();
+    if(stack[stack.length-1] !== id) stack.push(id);
+    switchView(id); updateCrumb();
+  }
+  function goHome(){ stack = ['home-view']; switchView('home-view'); renderHome(); updateCrumb(); }
+  function goBack(){
+    var drawer = $('cart-drawer');
+    if(drawer.style.display === 'flex'){ toggleCart(false); return; }
+    if(stack.length > 1){ stack.pop(); switchView(stack[stack.length-1]); updateCrumb(); }
+    else { try{ window.parent.postMessage({type:'close-shop'}, '*'); }catch(e){} }
+  }
+
+  function renderHome(){
+    var d = getData();
+    $('shop-title').textContent = CFG.name;
+    $('main-banner-img').src = d.bannerImg || FALLBACK;
+    $('main-banner-title').textContent = d.bannerTitle || CFG.name;
+    $('marquee-text').textContent = d.marquee || '';
+    $('marquee-bar').style.display = d.marquee ? 'block' : 'none';
+    var html = '';
+    d.categories.forEach(function(cat){
+      html += '<div class="cat-card" data-act="cat" data-id="'+esc(cat.id)+'"><img src="'+esc(cat.img||FALLBACK)+'" alt=""><h4>'+esc(cat.name)+'</h4></div>';
+    });
+    $('categories-grid').innerHTML = html || '<p style="grid-column:1/-1;text-align:center;color:#64748b;">لا توجد أقسام بعد.</p>';
+    updateBadge();
+  }
+
+  function openCategory(id){
+    var d = getData();
+    var cat = d.categories.find(function(c){ return String(c.id) === String(id); });
+    if(!cat) return;
+    currentCatId = cat.id;
+    $('current-cat-title').textContent = cat.name;
+    var html = '';
+    (cat.subtypes||[]).forEach(function(sub,i){
+      html += '<div class="sub-card"><img src="'+esc(sub.img||FALLBACK)+'" alt=""><div class="sub-info"><div><h5>'+esc(sub.name)+'</h5><p>'+esc(sub.desc)+'</p></div>'+
+        '<div class="row"><span class="price">'+esc(sub.price)+'</span><span class="btns"><button class="btn-cart-add" data-act="add" data-cat="'+esc(cat.id)+'" data-i="'+i+'" title="أضف للسلة">🛒+</button><button class="btn-order" data-act="order" data-cat="'+esc(cat.id)+'" data-i="'+i+'">اطلب الآن 📲</button></span></div></div></div>';
+    });
+    $('subtypes-list').innerHTML = html || '<p style="text-align:center;color:#64748b;">لا توجد منتجات.</p>';
+    go('sub-view');
+  }
+
+  function addToCart(catId, idx){
+    var d = getData();
+    var cat = d.categories.find(function(c){ return String(c.id) === String(catId); });
+    var p = cat && cat.subtypes && cat.subtypes[idx];
+    if(!p) return;
+    var price = parsePrice(p.price);
+    var ex = cart.find(function(i){ return i.name === p.name && i.price === price; });
+    if(ex) ex.qty += 1; else cart.push({ name:p.name, price:price, qty:1 });
+    updateBadge(); toast('تمت الإضافة إلى السلة ✔');
+  }
+  function updateBadge(){ $('cart-badge').textContent = cart.reduce(function(s,i){ return s+i.qty; },0); }
+
+  function normPhone(s){
+    s = String(s||'').replace(/[٠-٩]/g,function(d){ return '٠١٢٣٤٥٦٧٨٩'.indexOf(d); }).replace(/\D/g,'');
+    if(s.indexOf('00') === 0) s = s.slice(2);
+    else if(s.charAt(0) === '0') s = '20' + s.slice(1);
+    return s;
+  }
+  function openWhatsApp(msg){
+    var num = normPhone(getData().whatsapp);
+    if(num.length < 8){ toast('لم يتم ضبط رقم الواتساب بعد — أدخله من لوحة تحكم المحل'); return false; }
+    var w = window.open('https://wa.me/' + num + '?text=' + encodeURIComponent(msg), '_blank');
+    if(!w){ toast('اسمح بالنوافذ المنبثقة لإتمام إرسال الطلب'); return false; }
+    return true;
+  }
+  function orderNow(catId, idx){
+    var d = getData();
+    var cat = d.categories.find(function(c){ return String(c.id) === String(catId); });
+    var p = cat && cat.subtypes && cat.subtypes[idx];
+    if(!p) return;
+    var msg = '*طلب جديد من ' + CFG.name + '* 🛍️\n\n📦 *المنتج:* ' + p.name + '\n💰 *السعر:* ' + p.price + '\n🗂️ *القسم:* ' + cat.name + '\n\nبرجاء تأكيد الطلب وموعد التسليم 🙏';
+    openWhatsApp(msg);
+  }
+  function toggleCart(force){
+    var drawer = $('cart-drawer'), back = $('cart-backdrop');
+    var open = typeof force === 'boolean' ? force : drawer.style.display !== 'flex';
+    drawer.style.display = open ? 'flex' : 'none';
+    back.style.display = open ? 'block' : 'none';
+    if(open) renderCart();
+  }
+  function renderCart(){
+    var list = $('cart-items-list'), total = 0;
+    if(!cart.length){ list.innerHTML = '<p style="text-align:center;color:#64748b;">السلة فارغة حالياً.</p>'; $('cart-total-price').textContent = '0 ج.م'; return; }
+    var html = '';
+    cart.forEach(function(it,i){
+      var t = it.price*it.qty; total += t;
+      html += '<div class="cart-row"><div class="cr-info"><strong>'+esc(it.name)+'</strong><span>'+fmt(it.price)+' × '+it.qty+' = '+fmt(t)+' ج.م</span></div>'+
+        '<div class="cr-ctl"><button data-act="dec" data-i="'+i+'">−</button><b>'+it.qty+'</b><button data-act="inc" data-i="'+i+'">+</button><button data-act="rm" data-i="'+i+'" style="color:#ef4444;">✕</button></div></div>';
+    });
+    list.innerHTML = html;
+    $('cart-total-price').textContent = fmt(total) + ' ج.م';
+  }
+
+  function sendOrder(){
+    if(!cart.length){ toast('السلة فارغة!'); return; }
+    var name = $('customer-name-input').value.trim();
+    var d = getData();
+    var total = cart.reduce(function(s,i){ return s + i.price*i.qty; },0);
+    var msg = '*طلب جديد عبر ' + CFG.name + '* 🛍️\n';
+    if(name) msg += '👤 *الاسم:* ' + name + '\n';
+    msg += '\n📋 *الطلبات:*\n';
+    cart.forEach(function(it,i){ msg += (i+1) + '. ' + it.name + ' (' + it.qty + 'x) - ' + fmt(it.price*it.qty) + ' ج.م\n'; });
+    msg += '\n💰 *الإجمالي:* ' + fmt(total) + ' ج.م';
+    if(!openWhatsApp(msg)) return;
+    cart = []; updateBadge(); toggleCart(false);
+  }
+
+  function verifyLogin(){
+    var pass = $('login-password').value;
+    if(pass && (pass === CFG.pass || pass === CFG.masterPass)){
+      $('login-password').value = '';
+      setupAdmin(); go('admin-cp-view', true);
+    } else toast('كلمة المرور غير صحيحة!');
+  }
+
+  function setupAdmin(){
+    var d = getData();
+    $('cp-whatsapp-num').value = d.whatsapp || '';
+    $('cp-marquee-input').value = d.marquee || '';
+    $('cp-banner-title').value = d.bannerTitle || '';
+    $('cp-banner-img').value = d.bannerImg || '';
+    fillCatSelect(d, d.categories.length ? d.categories[0].id : null);
+  }
+  function fillCatSelect(d, selId){
+    var sel = $('cp-cat-select'); sel.innerHTML = '';
+    d.categories.forEach(function(c){ sel.innerHTML += '<option value="'+esc(c.id)+'">'+esc(c.name)+'</option>'; });
+    if(selId != null) sel.value = selId;
+    adminCatId = sel.value || null;
+    loadCategory();
+  }
+  function loadCategory(){
+    var d = getData();
+    var cat = d.categories.find(function(c){ return String(c.id) === String(adminCatId); });
+    var box = $('cp-products-editor');
+    if(!cat){ $('cp-cat-name').value=''; $('cp-cat-img').value=''; box.innerHTML=''; return; }
+    $('cp-cat-name').value = cat.name; $('cp-cat-img').value = cat.img || '';
+    if(!cat.subtypes) cat.subtypes = [];
+    var html = '';
+    cat.subtypes.forEach(function(sub,idx){
+      html += '<div class="prod-edit">'+
+        '<div class="form-group"><label>اسم المنتج:</label><input type="text" value="'+esc(sub.name)+'" id="prod-name-'+idx+'"></div>'+
+        '<div class="form-group"><label>السعر:</label><input type="text" value="'+esc(sub.price)+'" id="prod-price-'+idx+'"></div>'+
+        '<div class="form-group"><label>صورة المنتج (رفع أو كاميرا 📷 أو رابط):</label><div style="display:flex;gap:6px;">'+
+          '<input type="text" value="'+esc(sub.img)+'" id="prod-img-'+idx+'">'+
+          '<input type="file" accept="image/*" style="display:none;" id="prod-file-'+idx+'" data-upload="prod-img-'+idx+'">'+
+          '<button type="button" class="btn-action" style="width:auto;margin:0;padding:2px 8px;font-size:.7rem;" data-act="pick" data-for="prod-file-'+idx+'">📁 / 📷</button></div></div>'+
+        '<div class="form-group"><label>الوصف:</label><input type="text" value="'+esc(sub.desc)+'" id="prod-desc-'+idx+'"></div>'+
+        '<button type="button" class="btn-action btn-danger" style="padding:3px 8px;font-size:.7rem;width:auto;" data-act="del-prod" data-i="'+idx+'">حذف المنتج ❌</button></div>';
+    });
+    box.innerHTML = html;
+  }
+  function collectEdits(d){
+    var cat = d.categories.find(function(c){ return String(c.id) === String(adminCatId); });
+    if(!cat || !$('cp-cat-name')) return cat;
+    cat.name = $('cp-cat-name').value; cat.img = $('cp-cat-img').value;
+    (cat.subtypes||[]).forEach(function(s,i){
+      var n=$('prod-name-'+i); if(!n) return;
+      s.name = n.value; s.price = $('prod-price-'+i).value; s.img = $('prod-img-'+i).value; s.desc = $('prod-desc-'+i).value;
+    });
+    return cat;
+  }
+
+  document.addEventListener('click', function(e){
+    var t = e.target.closest('[data-act]'); if(!t) return;
+    var a = t.dataset.act, d;
+    switch(a){
+      case 'home': goHome(); break;
+      case 'back': goBack(); break;
+      case 'order': orderNow(t.dataset.cat, parseInt(t.dataset.i,10)); break;
+      case 'cart': toggleCart(); break;
+      case 'cart-close': toggleCart(false); break;
+      case 'login': go('login-view'); break;
+      case 'cat': openCategory(t.dataset.id); break;
+      case 'add': addToCart(t.dataset.cat, parseInt(t.dataset.i,10)); break;
+      case 'inc': cart[+t.dataset.i].qty++; renderCart(); updateBadge(); break;
+      case 'dec': var it = cart[+t.dataset.i]; it.qty--; if(it.qty<=0) cart.splice(+t.dataset.i,1); renderCart(); updateBadge(); break;
+      case 'rm': cart.splice(+t.dataset.i,1); renderCart(); updateBadge(); break;
+      case 'send': sendOrder(); break;
+      case 'verify': verifyLogin(); break;
+      case 'pick': $(t.dataset.for).click(); break;
+      case 'save-general':
+        d = getData();
+        var wn = $('cp-whatsapp-num').value.trim();
+        if(wn && normPhone(wn).length < 8){ toast('رقم الواتساب غير صحيح'); break; }
+        d.whatsapp = wn;
+        d.marquee = $('cp-marquee-input').value.trim();
+        d.bannerTitle = $('cp-banner-title').value.trim();
+        d.bannerImg = $('cp-banner-img').value.trim() || d.bannerImg;
+        saveData(d); renderHome(); toast('تم حفظ الإعدادات العامة ✔'); break;
+      case 'add-cat':
+        var nm = prompt('اسم القسم الجديد:'); if(!nm) break;
+        d = getData(); collectEdits(d);
+        var nid = d.categories.length ? Math.max.apply(null, d.categories.map(function(c){ return +c.id || 0; })) + 1 : 1;
+        d.categories.push({ id:nid, name:nm, img:IMG_DEFAULT, subtypes:[] });
+        saveData(d); fillCatSelect(d, nid); renderHome(); break;
+      case 'del-cat':
+        if(!confirm('حذف القسم بالكامل؟')) break;
+        d = getData();
+        d.categories = d.categories.filter(function(c){ return String(c.id) !== String(adminCatId); });
+        saveData(d); fillCatSelect(d, d.categories.length ? d.categories[0].id : null); renderHome(); break;
+      case 'add-prod':
+        d = getData(); var c1 = collectEdits(d); if(!c1) break;
+        if(!c1.subtypes) c1.subtypes = [];
+        c1.subtypes.push({ name:'منتج جديد', desc:'الوصف', price:'100 ج.م', img:'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=400&q=80' });
+        saveData(d); loadCategory(); break;
+      case 'del-prod':
+        d = getData(); var c2 = collectEdits(d); if(!c2) break;
+        c2.subtypes.splice(+t.dataset.i,1); saveData(d); loadCategory(); break;
+      case 'save-admin':
+        d = getData(); if(!collectEdits(d)) break;
+        saveData(d); fillCatSelect(d, adminCatId); renderHome(); toast('تم حفظ تفاصيل القسم والمنتجات ✔'); break;
+    }
+  });
+  document.addEventListener('change', function(e){
+    var t = e.target;
+    if(t.id === 'cp-cat-select'){
+      var d = getData(); collectEdits(d); saveData(d);
+      adminCatId = t.value; loadCategory(); return;
+    }
+    if(t.type === 'file' && t.dataset.upload && t.files && t.files[0]) readImage(t.files[0], t.dataset.upload);
+  });
+  document.addEventListener('error', function(e){
+    var el = e.target;
+    if(el && el.tagName === 'IMG' && !el.dataset.fb){ el.dataset.fb = '1'; el.src = FALLBACK; }
+  }, true);
+
+  renderHome(); updateCrumb();
+})();
+</script>
+</template>
+
+<script>
+/* =========================================================
+   بيانات المشروع
+   ========================================================= */
+const STORE_KEY = "al_share3_al_kabeer_master_v6";
+const LEGACY_KEY = "al_share3_al_kabeer_master_v5";
+let memStore = null;
+let renderedOnce = false;
+let lastAddedId = null;
+window.__shopMem = window.__shopMem || {};
+const FALLBACK_IMG = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#334155"/><stop offset="1" stop-color="#0f172a"/></linearGradient></defs><rect width="600" height="400" fill="url(#g)"/><text x="300" y="230" font-size="90" text-anchor="middle">🏪</text></svg>');
+
+const initialProjectData = {
+  projectName: "الشارع الكبير",
+  masterPass: "master",
+  theme: { bg: "#0f172a", street: "#090d16", accent: "#f59e0b", card: "#1e293b" },
+  items: [
+    { type: "shop", id: "shop1", name: "كشري وطواجن الونش", side: "right", banner: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=600&q=80", desc: "أشهى أطباق الكشري والطواجن", btnText: "استكشف 🔍", link: "", pass: "imo", status: "active", pauseMsg: "المحل مغلق حالياً للصيانة!" },
+    { type: "shop", id: "shop2", name: "سوبر ماركت الجمل", side: "left", banner: "https://images.unsplash.com/photo-1578916171728-46686eac8d58?auto=format&fit=crop&w=600&q=80", desc: "جميع المنتجات الغذائية بأسعار الجملة", btnText: "استكشف 🔍", link: "", pass: "imo", status: "active", pauseMsg: "المتجر مغلق للجرد السنوي." },
+    { type: "divider", id: "div1", title: "🌟 عروض الميدان الكبرى", side: "right", img: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80", desc: "تخفيضات تصل إلى 50%!", ticker: "🔥 خصومات حصرية لزوار الشارع الكبير اليوم فقط!" },
+    { type: "shop", id: "shop3", name: "الجمل ستورز للبويات", side: "right", banner: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=600&q=80", desc: "أجود أنواع الدهانات والديكورات", btnText: "استكشف 🔍", link: "", pass: "imo", status: "active", pauseMsg: "جاري تحديث الأسعار." },
+    { type: "shop", id: "shop4", name: "أكاديمية فيزا", side: "left", banner: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80", desc: "خدمات تعليمية وكورسات معتمدة", btnText: "استكشف 🔍", link: "", pass: "imo", status: "active", pauseMsg: "باب التسجيل مغلق." },
+    { type: "shop", id: "shop5", name: "المركز الدولي للدواجن", side: "right", banner: "https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&w=600&q=80", desc: "مستلزمات مزارع الدواجن والأعلاف", btnText: "استكشف 🔍", link: "", pass: "imo", status: "active", pauseMsg: "جاري الاستلام." },
+    { type: "shop", id: "shop6", name: "Special Fashion", side: "left", banner: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=600&q=80", desc: "أحدث صيحات الموضة والملابس", btnText: "استكشف 🔍", link: "", pass: "imo", status: "active", pauseMsg: "المحل مغلق." }
+  ]
+};
+
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+let toastTimer;
+function toast(msg){
+  const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+/* كل صف (يمين/يسار) = 20 محلاً بالضبط: المحلات الحقيقية + «محل جديد» لتكملة العشرين */
+const SHOPS_PER_SIDE = 20;
+function mkSlot(side, n){
+  return { type:'shop', id:'slot_' + (side === 'right' ? 'r' : 'l') + String(n).padStart(2,'0'), name:'محل جديد', side,
+    banner:'', desc:'بيانات المحل قريباً', btnText:'استكشف 🔍', link:'', pass:'imo', status:'active', pauseMsg:'المحل مغلق حالياً' };
+}
+function ensureSlots(data){
+  if(data.slotsV === 2) return false;
+  ['right','left'].forEach(side => {
+    const count = () => data.items.filter(i => i.type === 'shop' && i.side === side).length;
+    // قصّ الزيادة من «محل جديد» غير المعدَّلة فقط (من آخر الصف)
+    for(let k = data.items.length - 1; k >= 0 && count() > SHOPS_PER_SIDE; k--){
+      const it = data.items[k];
+      if(it.side === side && isSlot(it)) data.items.splice(k, 1);
+    }
+    // تكملة الناقص
+    const used = new Set(data.items.map(i => i.id));
+    for(let n = 1; count() < SHOPS_PER_SIDE; n++){
+      const sl = mkSlot(side, n);
+      if(!used.has(sl.id)){ data.items.push(sl); used.add(sl.id); }
+    }
+  });
+  data.slotsV = 2; delete data.slots20;
+  return true;
+}
+/* المرجع الأساسي للبيانات هو الذاكرة (STATE)، والتخزين الدائم نسخة احتياطية.
+   بهذا لا يضيع أي تعديل حتى لو فشلت الكتابة (امتلاء التخزين أو فتح الملف من واتساب). */
+let STATE = null;
+function persist(data){
+  const s = JSON.stringify(data);
+  memStore = s;
+  try { localStorage.setItem(STORE_KEY, s); return true; } catch(e){ return false; }
+}
+function isSlot(item){ return item.type === 'shop' && String(item.id).indexOf('slot_') === 0 && item.name === 'محل جديد'; }
+function getProjectData(){
+  if(STATE) return STATE;
+  let raw = memStore;
+  if(!raw){ try { raw = localStorage.getItem(STORE_KEY); } catch(e){} }
+  let data = null;
+  if(raw){ try { data = JSON.parse(raw); } catch(e){} }
+  let dirty = false;
+  if(!data || !Array.isArray(data.items)){
+    // ترحيل بيانات النسخة السابقة إن وُجدت
+    let legacy = null;
+    try { legacy = JSON.parse(localStorage.getItem(LEGACY_KEY) || 'null'); } catch(e){}
+    data = (legacy && Array.isArray(legacy.items)) ? legacy : JSON.parse(JSON.stringify(initialProjectData));
+    dirty = true;
+  }
+  if(ensureSlots(data)) dirty = true;
+  if(dirty) persist(data);
+  data.theme = Object.assign({}, initialProjectData.theme, data.theme || {});
+  STATE = data;
+  return STATE;
+}
+function saveProjectData(data){
+  STATE = data;
+  if(!persist(data)) toast('⚠️ التعديل ظاهر الآن لكن لا يمكن حفظه دائماً (المساحة ممتلئة أو التخزين غير متاح) — استخدم «تصدير البيانات»');
+  renderStreet(); applyTheme();
+}
+
+/* ---------- رفع الصور مع ضغطها ---------- */
+function convertImageToURL(event, targetInputId){
+  const file = event.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e){
+    const img = new Image();
+    img.onload = function(){
+      const r = Math.min(1, 900 / img.width);
+      const c = document.createElement('canvas');
+      c.width = Math.round(img.width * r); c.height = Math.round(img.height * r);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      document.getElementById(targetInputId).value = c.toDataURL('image/jpeg', 0.78);
+      toast('تم رفع الصورة / التقاطها بنجاح ✔');
+    };
+    img.onerror = function(){ document.getElementById(targetInputId).value = e.target.result; toast('تم رفع الصورة ✔'); };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function applyTheme(){
+  const data = getProjectData();
+  const root = document.documentElement;
+  root.style.setProperty('--primary-bg', data.theme.bg);
+  root.style.setProperty('--street-color', data.theme.street);
+  root.style.setProperty('--street-line', data.theme.accent);
+  root.style.setProperty('--accent-gold', data.theme.accent);
+  root.style.setProperty('--card-bg', data.theme.card);
+  document.getElementById('brand-header-text').innerText = data.projectName;
+  document.getElementById('hero-title').innerText = data.projectName;
+  document.getElementById('page-main-title').innerText = data.projectName + ' - منصة المحلات';
+  document.title = data.projectName + ' - منصة المحلات';
+}
+
+/* ---------- رسم الشارع ---------- */
+function shopCardHTML(item, i){
+  const open = item.status === 'active';
+  const soon = isSlot(item);
+  return `<div class="shop-card" data-item-id="${esc(item.id)}" style="--i:${i % 8}">
+    <div class="awning"></div>
+    <div class="shop-banner-box">
+      <img src="${esc(item.banner || FALLBACK_IMG)}" alt="${esc(item.name)}" loading="lazy">
+      <span class="shop-status-badge ${soon ? 'badge-soon' : (open ? 'badge-active' : 'badge-paused')}">${soon ? 'قريباً' : (open ? 'مفتوح' : 'صيانة')}</span>
+      <div class="shop-neon">${esc(item.name)}</div>
+    </div>
+    <button class="btn-enter-shop" data-shop="${esc(item.id)}">
+      <span>${esc(item.btnText || 'استكشف 🔍')}</span>
+      <span class="desc-sub">${esc(item.desc || '')}</span>
+    </button>
+  </div>`;
+}
+function dividerCardHTML(item, i){
+  return `<div class="divider-card" data-item-id="${esc(item.id)}" style="--i:${i % 8}">
+    <div class="shop-banner-box"><img src="${esc(item.img || FALLBACK_IMG)}" alt="${esc(item.title)}" loading="lazy"></div>
+    <div class="divider-ticker-bar">📢 ${esc(item.ticker || item.title)}</div>
+    <div class="divider-title-bar"><span>${esc(item.title)}</span></div>
+  </div>`;
+}
+
+function countTo(el, to){
+  const from = parseInt(el.textContent, 10) || 0;
+  const t0 = performance.now();
+  (function f(t){
+    const p = Math.min(1, (t - t0) / 700);
+    el.textContent = Math.round(from + (to - from) * p);
+    if(p < 1) requestAnimationFrame(f);
+  })(t0);
+}
+
+function renderStreet(){
+  const data = getProjectData();
+  const rightCol = document.getElementById('right-column-items');
+  const leftCol = document.getElementById('left-column-items');
+  let r = '', l = '';
+  data.items.forEach((item, i) => {
+    const html = item.type === 'shop' ? shopCardHTML(item, i) : dividerCardHTML(item, i);
+    if(item.side === 'right') r += html; else l += html;
+  });
+  rightCol.innerHTML = r; leftCol.innerHTML = l;
+  const gridEl = document.querySelector('.street-grid');
+  if(renderedOnce) gridEl.classList.add('no-anim');
+  renderedOnce = true;
+
+  const shops = data.items.filter(i => i.type === 'shop' && !isSlot(i));
+  const open = shops.filter(s => s.status === 'active').length;
+  document.getElementById('nav-open-count').textContent = open + ' محل مفتوح الآن';
+
+  const parts = [];
+  data.items.forEach(i => {
+    if(i.type === 'divider') parts.push(i.ticker || i.title);
+    else if(i.status === 'active' && !isSlot(i)) parts.push('🏪 ' + i.name + ' — ' + (i.desc || ''));
+  });
+  document.getElementById('ticker-track').textContent = parts.join('   ✦   ');
+}
+
+/* ---------- فتح تطبيق المحل ---------- */
+function buildShopApp(shop){
+  const tpl = document.getElementById('shop-app-tpl');
+  const cfg = { id: shop.id, name: shop.name, pass: shop.pass || '', masterPass: getProjectData().masterPass || '', banner: shop.banner || '' };
+  const cfgJson = JSON.stringify(cfg).replace(/</g, '\\u003c');
+  return '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8">' +
+    '<meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+    '<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800&display=swap" rel="stylesheet">' +
+    '<title>' + esc(shop.name) + '</title></head><body>' +
+    '<script>window.SHOP_CFG=' + cfgJson + ';<\/script>' + tpl.innerHTML + '</body></html>';
+}
+
+function handleShopClick(shopId){
+  const data = getProjectData();
+  const shop = data.items.find(i => i.id === shopId);
+  if(!shop) return;
+  if(shop.status === 'paused'){ alert('⚠️ ' + shop.name + ':\n\n' + (shop.pauseMsg || 'المحل مغلق حالياً')); return; }
+  if(shop.link && shop.link.trim() !== ''){ window.open(shop.link, '_blank'); return; }
+  document.getElementById('app-modal-title').innerText = shop.name;
+  document.getElementById('app-iframe').srcdoc = buildShopApp(shop);
+  document.getElementById('app-modal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  Traffic.pause();
+}
+function closeAppModal(){
+  document.getElementById('app-modal').style.display = 'none';
+  document.getElementById('app-iframe').srcdoc = '';
+  document.body.style.overflow = '';
+  Traffic.resume();
+}
+
+/* ---------- لوحة التحكم ---------- */
+function openMasterLogin(){
+  const data = getProjectData();
+  const pass = prompt('أدخل كلمة سر مدير المشروع:');
+  if(pass === data.masterPass){
+    setupMasterCPView();
+    document.getElementById('master-cp-modal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    Traffic.pause();
+  } else if(pass !== null){ alert('كلمة السر غير صحيحة!'); }
+}
+function closeMasterCP(){
+  document.getElementById('master-cp-modal').style.display = 'none';
+  document.body.style.overflow = '';
+  Traffic.resume();
+}
+function setupMasterCPView(){
+  const data = getProjectData();
+  document.getElementById('cp-project-name').value = data.projectName;
+  document.getElementById('cp-color-bg').value = data.theme.bg;
+  document.getElementById('cp-color-street').value = data.theme.street;
+  document.getElementById('cp-color-accent').value = data.theme.accent;
+  document.getElementById('cp-color-card').value = data.theme.card;
+  document.getElementById('cp-master-pass').value = data.masterPass;
+  updateStorageNote();
+  renderItemsTable();
+}
+function renderItemsTable(){
+  const data = getProjectData();
+  const tbody = document.getElementById('cp-items-table-body');
+  let html = '';
+  data.items.forEach((item, index) => {
+    const isShop = item.type === 'shop';
+    html += `<tr id="row-${esc(item.id)}">
+      <td>${index + 1}</td>
+      <td><strong>${esc(isShop ? item.name : item.title)}</strong></td>
+      <td>${isShop ? '🏪 محل' : '🖼️ فاصل'}</td>
+      <td>${item.side === 'right' ? 'اليمين' : 'الشمال'}</td>
+      <td><code>${isShop ? esc(item.pass) : '-'}</code></td>
+      <td>${isShop ? (item.status === 'active' ? '🟢 شغال' : '🔴 متوقف') : '🌟 ترويجي'}</td>
+      <td><button onclick="moveItem(${index},-1)" style="cursor:pointer;">⬆</button> <button onclick="moveItem(${index},1)" style="cursor:pointer;">⬇</button></td>
+      <td>
+        <button class="btn-action-cp" style="padding:4px 8px;font-size:.75rem;" onclick="openEditItem('${esc(item.id)}')">تعديل ✏️</button>
+        <button class="btn-action-cp btn-danger-cp" style="padding:4px 8px;font-size:.75rem;" onclick="deleteItem('${esc(item.id)}')">حذف 🗑️</button>
+        <button class="btn-action-cp btn-warning-cp" style="padding:4px 8px;font-size:.75rem;" onclick="viewItem('${esc(item.id)}')">👁</button>
+      </td></tr>`;
+  });
+  tbody.innerHTML = html;
+}
+function saveProjectName(){
+  const name = document.getElementById('cp-project-name').value.trim(); if(!name) return;
+  const data = getProjectData(); data.projectName = name; saveProjectData(data); toast('تم تحديث اسم المشروع ✔');
+}
+function saveThemeSettings(){
+  const data = getProjectData();
+  data.theme.bg = document.getElementById('cp-color-bg').value;
+  data.theme.street = document.getElementById('cp-color-street').value;
+  data.theme.accent = document.getElementById('cp-color-accent').value;
+  data.theme.card = document.getElementById('cp-color-card').value;
+  saveProjectData(data); toast('تم حفظ الألوان ✔');
+}
+function saveMasterPass(){
+  const p = document.getElementById('cp-master-pass').value.trim(); if(!p) return;
+  const data = getProjectData(); data.masterPass = p; saveProjectData(data); toast('تم تحديث كلمة السر العامة ✔');
+}
+function addNewShop(){
+  const name = document.getElementById('new-shop-name').value.trim();
+  if(!name){ alert('يرجى كتابة اسم المحل!'); return; }
+  const data = getProjectData();
+  insertItem(data, document.getElementById('new-shop-pos').value, {
+    type: 'shop', id: 'shop_' + Date.now(), name,
+    side: document.getElementById('new-shop-side').value,
+    banner: document.getElementById('new-shop-banner').value || 'https://images.unsplash.com/photo-1543353071-10c8ba85a904?auto=format&fit=crop&w=600&q=80',
+    desc: document.getElementById('new-shop-desc').value || 'محل تجاري متميز',
+    btnText: document.getElementById('new-shop-btn').value || 'استكشف 🔍',
+    link: document.getElementById('new-shop-link').value.trim(),
+    pass: 'imo', status: 'active', pauseMsg: 'المحل مغلق للصيانة'
+  });
+  saveProjectData(data); afterAdd(lastAddedId, '✔ تمت إضافة المحل — جارٍ عرضه في الشارع');
+  document.getElementById('new-shop-name').value = '';
+}
+function addNewDivider(){
+  const title = document.getElementById('new-div-title').value.trim();
+  if(!title){ alert('يرجى كتابة العنوان!'); return; }
+  const data = getProjectData();
+  insertItem(data, document.getElementById('new-div-pos').value, {
+    type: 'divider', id: 'div_' + Date.now(), title,
+    side: document.getElementById('new-div-side').value,
+    img: document.getElementById('new-div-img').value || 'https://images.unsplash.com/photo-1543353071-10c8ba85a904?auto=format&fit=crop&w=600&q=80',
+    desc: document.getElementById('new-div-desc').value || '',
+    ticker: document.getElementById('new-div-ticker').value || ''
+  });
+  saveProjectData(data); afterAdd(lastAddedId, '✔ تمت إضافة الفاصل — جارٍ عرضه في الشارع');
+  document.getElementById('new-div-title').value = '';
+}
+function moveItem(index, direction){
+  const data = getProjectData();
+  const side = data.items[index].side;
+  let t = index + direction;
+  while(t >= 0 && t < data.items.length && data.items[t].side !== side) t += direction;   // أقرب عنصر في نفس الصف
+  if(t < 0 || t >= data.items.length) return;
+  [data.items[index], data.items[t]] = [data.items[t], data.items[index]];
+  saveProjectData(data); setupMasterCPView();
+}
+function deleteItem(itemId){
+  if(!confirm('هل أنت متأكد من الحذف؟')) return;
+  const data = getProjectData(); data.items = data.items.filter(i => i.id !== itemId);
+  saveProjectData(data); setupMasterCPView();
+}
+function openEditItem(itemId){
+  const data = getProjectData(); const item = data.items.find(i => i.id === itemId); if(!item) return;
+  const $ = id => document.getElementById(id);
+  if(item.type === 'shop'){
+    $('edit-div-box').style.display = 'none';
+    $('edit-shop-id').value = item.id; $('edit-shop-title-label').innerText = item.name;
+    $('edit-shop-name').value = item.name; $('edit-shop-side').value = item.side;
+    $('edit-shop-banner').value = item.banner; $('edit-shop-desc').value = item.desc;
+    $('edit-shop-btn').value = item.btnText; $('edit-shop-link').value = item.link || '';
+    $('edit-shop-pass').value = item.pass; $('edit-shop-status').value = item.status;
+    $('edit-shop-pause-msg').value = item.pauseMsg; $('edit-shop-box').style.display = 'block';
+    $('edit-shop-box').scrollIntoView({behavior:'smooth'});
+  } else {
+    $('edit-shop-box').style.display = 'none';
+    $('edit-div-id').value = item.id; $('edit-div-title').value = item.title;
+    $('edit-div-side').value = item.side; $('edit-div-img').value = item.img;
+    $('edit-div-desc').value = item.desc; $('edit-div-ticker').value = item.ticker || '';
+    $('edit-div-box').style.display = 'block';
+    $('edit-div-box').scrollIntoView({behavior:'smooth'});
+  }
+}
+function insertItem(data, pos, item){
+  if(pos === 'start') data.items.unshift(item); else data.items.push(item);
+  lastAddedId = item.id;
+}
+function afterAdd(id, msg){
+  setupMasterCPView();
+  toast(msg);
+  viewItem(id);   // يغلق اللوحة ويأخذك إلى الكارت الجديد في الشارع ويُظهره بوميض
+}
+function viewItem(id){
+  closeMasterCP();
+  setTimeout(() => {
+    const el = document.querySelector('[data-item-id="' + id + '"]');
+    if(!el) return;
+    el.scrollIntoView({behavior:'smooth', block:'center'});
+    el.classList.add('flash');
+    setTimeout(() => el.classList.remove('flash'), 3600);
+  }, 200);
+}
+function storageOK(){
+  try { const k = '__t'; localStorage.setItem(k, '1'); localStorage.removeItem(k); return true; } catch(e){ return false; }
+}
+function updateStorageNote(){
+  const n = document.getElementById('cp-storage-note');
+  if(storageOK()){ n.style.display = 'none'; return; }
+  n.style.display = 'block';
+  n.textContent = '⚠️ التخزين الدائم غير متاح في هذا الرابط/المتصفح (مثل فتح الملف مباشرة من واتساب)، لذلك ستضيع التعديلات عند إغلاق الصفحة. افتح الملف من متصفح كروم بعد حفظه على الجهاز، أو ارفعه على استضافة (مثل Netlify)، واستخدم «تصدير البيانات» للاحتفاظ بنسخة.';
+}
+function exportAllData(){
+  const out = { app:'big-street', v:6, master:getProjectData(), shops:{} };
+  try {
+    for(let i = 0; i < localStorage.length; i++){
+      const k = localStorage.key(i);
+      if(k && k.indexOf('shop_app_data_') === 0) out.shops[k] = localStorage.getItem(k);
+    }
+  } catch(e){}
+  const mem = window.__shopMem || {};
+  Object.keys(mem).forEach(k => { if(k.indexOf('shop_app_data_') === 0) out.shops[k] = mem[k]; });
+  const blob = new Blob([JSON.stringify(out)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'big-street-backup-' + new Date().toISOString().slice(0,10) + '.json';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  toast('تم تصدير النسخة الاحتياطية ✔');
+}
+function importAllData(ev){
+  const f = ev.target.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = function(){
+    try {
+      const o = JSON.parse(r.result);
+      if(!o.master || !Array.isArray(o.master.items)) throw new Error('bad');
+      persist(o.master); STATE = null;
+      Object.keys(o.shops || {}).forEach(k => {
+        if(k.indexOf('shop_app_data_') !== 0) return;
+        window.__shopMem[k] = o.shops[k];
+        try { localStorage.setItem(k, o.shops[k]); } catch(e){}
+      });
+      renderStreet(); applyTheme(); setupMasterCPView(); toast('تم استيراد البيانات ✔');
+    } catch(e){ alert('ملف غير صالح'); }
+    ev.target.value = '';
+  };
+  r.readAsText(f);
+}
+function cancelShopEdit(){ document.getElementById('edit-shop-box').style.display = 'none'; }
+function cancelDividerEdit(){ document.getElementById('edit-div-box').style.display = 'none'; }
+function saveShopEdit(){
+  const $ = id => document.getElementById(id);
+  const data = getProjectData(); const item = data.items.find(i => i.id === $('edit-shop-id').value); if(!item) return;
+  item.name = $('edit-shop-name').value; item.side = $('edit-shop-side').value;
+  item.banner = $('edit-shop-banner').value; item.desc = $('edit-shop-desc').value;
+  item.btnText = $('edit-shop-btn').value; item.link = $('edit-shop-link').value.trim();
+  item.pass = $('edit-shop-pass').value; item.status = $('edit-shop-status').value;
+  item.pauseMsg = $('edit-shop-pause-msg').value;
+  saveProjectData(data); setupMasterCPView(); cancelShopEdit(); toast('تم الحفظ بنجاح ✔');
+}
+function saveDividerEdit(){
+  const $ = id => document.getElementById(id);
+  const data = getProjectData(); const item = data.items.find(i => i.id === $('edit-div-id').value); if(!item) return;
+  item.title = $('edit-div-title').value; item.side = $('edit-div-side').value;
+  item.img = $('edit-div-img').value; item.desc = $('edit-div-desc').value; item.ticker = $('edit-div-ticker').value;
+  saveProjectData(data); setupMasterCPView(); cancelDividerEdit(); toast('تم الحفظ بنجاح ✔');
+}
+
+/* =========================================================
+   حركة المرور: سيارات في الاتجاهين + مشاة على الأرصفة
+   ========================================================= */
+const Traffic = (function(){
+  const COLORS = ['#e11d48','#2563eb','#16a34a','#f59e0b','#7c3aed','#0ea5e9','#f1f5f9','#475569','#ea580c','#14b8a6','#be123c'];
+  const BUS_COLORS = ['#2563eb','#dc2626','#16a34a','#f59e0b'];
+  const PED_COLORS = ['#f472b6','#60a5fa','#fbbf24','#34d399','#c084fc','#fb7185'];
+  const TYPES = [
+    { k:'sedan', w:34, h:68,  wt:52 },
+    { k:'taxi',  w:34, h:68,  wt:16 },
+    { k:'van',   w:36, h:80,  wt:16 },
+    { k:'bus',   w:40, h:124, wt:8  }
+  ];
+  const GAP = 26;
+  let W = 0, H = 0, S = 1, SW = 22, laneX = [0,0];
+  let lanes = [], peds = [];
+  let raf = 0, last = 0, running = false, paused = false, inited = false;
+  const reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+  const rand = (a,b) => a + Math.random() * (b - a);
+  const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+  function pick(){
+    let tot = 0; TYPES.forEach(t => tot += t.wt);
+    let r = Math.random() * tot;
+    for(const t of TYPES){ if((r -= t.wt) <= 0) return t; }
+    return TYPES[0];
+  }
+
+  function carSVG(t, col){
+    const w = t.w, h = t.h;
+    let s = '<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'" viewBox="0 0 '+w+' '+h+'">';
+    s += '<defs><linearGradient id="cg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".25"/></linearGradient></defs>';
+    s += '<rect x="3" y="5" width="'+(w-4)+'" height="'+(h-4)+'" rx="10" fill="rgba(0,0,0,.45)"/>';
+    const ys = t.k === 'bus' ? [18, h-34] : [12, h-23];
+    ys.forEach(y => {
+      s += '<rect x="0" y="'+y+'" width="5" height="11" rx="1.6" fill="#0b0b0b"/><rect x="'+(w-5)+'" y="'+y+'" width="5" height="11" rx="1.6" fill="#0b0b0b"/>';
+    });
+    const rx = t.k === 'bus' ? 7 : 10;
+    s += '<rect x="3" y="1" width="'+(w-6)+'" height="'+(h-2)+'" rx="'+rx+'" fill="'+col+'"/>';
+    s += '<rect x="3" y="1" width="'+(w-6)+'" height="'+(h-2)+'" rx="'+rx+'" fill="url(#cg)"/>';
+    if(t.k === 'sedan' || t.k === 'taxi'){
+      s += '<rect x="7" y="4" width="'+(w-14)+'" height="15" rx="6" fill="rgba(255,255,255,.16)"/>';
+      s += '<path d="M8 24 Q17 20 26 24 L25 33 Q17 31 9 33 Z" fill="#a8d8ff"/>';
+      s += '<rect x="8" y="33" width="18" height="14" rx="3" fill="rgba(255,255,255,.1)" stroke="rgba(0,0,0,.22)" stroke-width=".8"/>';
+      s += '<path d="M9 47 Q17 45 25 47 L26 54 Q17 57 8 54 Z" fill="#86bff0"/>';
+      if(t.k === 'taxi'){
+        s += '<rect x="11" y="36" width="12" height="6" rx="2" fill="#fff" stroke="#111" stroke-width=".8"/>';
+        s += '<rect x="3" y="30" width="'+(w-6)+'" height="1.6" fill="#111" opacity=".55"/>';
+      }
+    } else if(t.k === 'van'){
+      s += '<rect x="7" y="4" width="'+(w-14)+'" height="14" rx="6" fill="rgba(255,255,255,.16)"/>';
+      s += '<path d="M8 22 Q18 18 28 22 L27 31 Q18 29 9 31 Z" fill="#a8d8ff"/>';
+      s += '<rect x="8" y="33" width="20" height="40" rx="3" fill="rgba(255,255,255,.14)" stroke="rgba(0,0,0,.22)" stroke-width=".8"/>';
+      [42,52,62].forEach(y => { s += '<line x1="8" y1="'+y+'" x2="28" y2="'+y+'" stroke="rgba(0,0,0,.2)" stroke-width="1"/>'; });
+    } else {
+      s += '<rect x="8" y="3" width="24" height="4" rx="1" fill="#fde047"/>';
+      s += '<path d="M6 12 Q20 8 34 12 L33 24 Q20 21 7 24 Z" fill="#a8d8ff"/>';
+      s += '<rect x="6" y="28" width="28" height="86" rx="4" fill="rgba(255,255,255,.18)" stroke="rgba(0,0,0,.22)" stroke-width=".8"/>';
+      [40,64,88].forEach(y => { s += '<rect x="14" y="'+y+'" width="12" height="10" rx="2" fill="rgba(0,0,0,.2)"/>'; });
+    }
+    s += '<rect x="5" y="1.5" width="8" height="3.5" rx="1.5" fill="#fff6bf"/><rect x="'+(w-13)+'" y="1.5" width="8" height="3.5" rx="1.5" fill="#fff6bf"/>';
+    s += '<rect x="5" y="'+(h-5)+'" width="8" height="3" rx="1.2" fill="#ff3b3b"/><rect x="'+(w-13)+'" y="'+(h-5)+'" width="8" height="3" rx="1.2" fill="#ff3b3b"/>';
+    s += '<ellipse cx="2" cy="'+(t.k==='bus'?20:27)+'" rx="2.2" ry="3" fill="'+col+'"/><ellipse cx="'+(w-2)+'" cy="'+(t.k==='bus'?20:27)+'" rx="2.2" ry="3" fill="'+col+'"/>';
+    return s + '</svg>';
+  }
+
+  function dress(c, lane){
+    const t = pick();
+    const col = t.k === 'taxi' ? '#fbbf24' : (t.k === 'bus' ? BUS_COLORS[(Math.random()*BUS_COLORS.length)|0] : COLORS[(Math.random()*COLORS.length)|0]);
+    c.t = t; c.len = t.h * S; c.w = t.w * S;
+    c.el.style.width = t.w + 'px'; c.el.style.height = t.h + 'px';
+    c.inner.className = 'car-in' + (lane.dir === 1 ? ' down' : '');
+    c.inner.innerHTML = carSVG(t, col) + '<div class="beam" style="width:' + (t.w - 6) + 'px;left:3px"></div>';
+    c.vmax = ((t.k === 'bus' ? 70 : 92) + Math.random() * 58) * (0.65 + 0.35 * Math.min(1, S));
+    c.gapJ = rand(0, 40) * S;
+  }
+
+  function newCar(lane){
+    const el = document.createElement('div'); el.className = 'car';
+    const inner = document.createElement('div');
+    el.appendChild(inner);
+    const c = { el, inner, pos: 0, v: 0 };
+    dress(c, lane);
+    return c;
+  }
+
+  function newPed(side){
+    const el = document.createElement('div'); el.className = 'ped';
+    const col = PED_COLORS[(Math.random()*PED_COLORS.length)|0];
+    el.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12"><ellipse cx="6" cy="7.2" rx="5" ry="3" fill="'+col+'"/><circle cx="6" cy="5.6" r="2.7" fill="#f1c9a5"/><path d="M3.4 5.2 A2.7 2.7 0 0 1 8.6 5.2 Q6 3.6 3.4 5.2Z" fill="#2b1d12"/></svg>';
+    return { el, side, pos: rand(0, H), dir: Math.random() < .5 ? 1 : -1, v: rand(9, 20), ph: rand(0, 6.28) };
+  }
+
+  function measure(){
+    const road = document.getElementById('street-road');
+    const sw = road && road.querySelector('.sw-left');
+    if(!road || !sw) return false;
+    const r = road.getBoundingClientRect();
+    W = r.width; H = r.height; SW = sw.getBoundingClientRect().width;
+    if(W < 40 || H < 100) return false;
+    const lane = (W - 2 * SW) / 2;
+    S = clamp(lane * 0.74 / 34, 0.5, 1.25);
+    laneX = [SW + lane * 0.5, SW + lane * 1.5];   // يسار: اتجاه للأسفل — يمين: اتجاه للأعلى
+    return true;
+  }
+
+  function build(){
+    if(!measure()) return;
+    const L = document.getElementById('traffic-layer'); L.innerHTML = '';
+    lanes = []; peds = [];
+    for(let li = 0; li < 2; li++){
+      const lane = { dir: li === 0 ? 1 : -1, x: laneX[li], cars: [] };
+      const n = clamp(Math.round(H / 230), 3, 20);
+      for(let i = 0; i < n; i++){
+        const c = newCar(lane);
+        c.pos = (H + 200) * (1 - i / n) - rand(0, 40);
+        c.v = c.vmax;
+        lane.cars.push(c); L.appendChild(c.el);
+      }
+      lanes.push(lane);
+    }
+    const pn = clamp(Math.round(H / 230), 2, 16);
+    for(let side = 0; side < 2; side++){
+      for(let i = 0; i < pn; i++){ const p = newPed(side); peds.push(p); L.appendChild(p.el); }
+    }
+    render(0);
+  }
+
+  function step(dt){
+    lanes.forEach(lane => {
+      const cs = lane.cars.slice().sort((a,b) => b.pos - a.pos);
+      for(let i = 0; i < cs.length; i++){
+        const c = cs[i]; let v = c.vmax; let np = c.pos + v * dt;
+        if(i > 0){
+          const a = cs[i-1]; const lim = a.pos - a.len - (GAP * S + c.gapJ);
+          if(np > lim){ np = Math.max(c.pos, lim); v = Math.min(v, a.v); }
+        }
+        c.pos = np; c.v = v;
+      }
+      cs.forEach((c, idx) => {
+        if(c.pos - c.len > H + 10){
+          let last = null;
+          cs.forEach(o => { if(o !== c && (!last || o.pos < last.pos)) last = o; });
+          dress(c, lane);
+          const tail = last ? last.pos - last.len - (GAP * S + rand(10, 120)) : 0;
+          c.pos = Math.min(-rand(0, 60), tail);
+          c.v = c.vmax;
+        }
+      });
+    });
+    peds.forEach(p => {
+      p.pos += p.dir * p.v * dt;
+      if(p.pos > H + 14) p.pos = -14;
+      if(p.pos < -14) p.pos = H + 14;
+    });
+  }
+
+  function render(ts){
+    lanes.forEach(lane => {
+      lane.cars.forEach(c => {
+        const top = lane.dir === 1 ? c.pos - c.len : H - c.pos;
+        c.el.style.transform = 'translate(' + (lane.x - c.w / 2).toFixed(1) + 'px,' + top.toFixed(1) + 'px) scale(' + S.toFixed(3) + ')';
+      });
+    });
+    const ps = Math.min(1, SW / 20);
+    peds.forEach(p => {
+      const cx = p.side === 0 ? SW / 2 : W - SW / 2;
+      const x = cx - 6 + Math.sin(ts / 700 + p.ph) * Math.min(3, SW / 5);
+      p.el.style.transform = 'translate(' + x.toFixed(1) + 'px,' + p.pos.toFixed(1) + 'px) rotate(' + (p.dir === 1 ? 180 : 0) + 'deg) scale(' + ps.toFixed(2) + ')';
+    });
+  }
+
+  function frame(ts){
+    if(!running) return;
+    const dt = Math.min(0.05, (ts - last) / 1000 || 0); last = ts;
+    step(dt); render(ts);
+    raf = requestAnimationFrame(frame);
+  }
+  function start(){
+    if(reduce || running || paused) return;
+    running = true; last = performance.now(); raf = requestAnimationFrame(frame);
+  }
+  function stop(){ running = false; cancelAnimationFrame(raf); }
+
+  function init(){
+    if(inited){ build(); return; }
+    inited = true;
+    build(); start();
+    let tmo;
+    const road = document.getElementById('street-road');
+    const onResize = () => {
+      clearTimeout(tmo);
+      tmo = setTimeout(() => {
+        const r = road.getBoundingClientRect();
+        if(Math.abs(r.width - W) > 2 || Math.abs(r.height - H) > 30) build();
+      }, 150);
+    };
+    if(window.ResizeObserver) new ResizeObserver(onResize).observe(road);
+    window.addEventListener('resize', onResize);
+    document.addEventListener('visibilitychange', () => { document.hidden ? stop() : start(); });
+  }
+  return {
+    init, build,
+    pause(){ paused = true; stop(); },
+    resume(){ paused = false; start(); }
+  };
+})();
+
+/* =========================================================
+   التشغيل
+   ========================================================= */
+(function boot(){
+  document.getElementById('street').addEventListener('click', function(e){
+    const btn = e.target.closest('[data-shop]');
+    if(btn) handleShopClick(btn.dataset.shop);
+  });
+  // صورة بديلة عند فشل تحميل أي صورة
+  document.addEventListener('error', function(e){
+    const el = e.target;
+    if(el && el.tagName === 'IMG' && !el.dataset.fb){ el.dataset.fb = '1'; el.src = FALLBACK_IMG; }
+  }, true);
+  document.getElementById('cp-open-btn').addEventListener('click', openMasterLogin);
+  window.addEventListener('message', function(e){
+    const f = document.getElementById('app-iframe');
+    if(e.data && e.data.type === 'close-shop' && f && e.source === f.contentWindow) closeAppModal();
+  });
+  document.getElementById('app-close-btn').addEventListener('click', closeAppModal);
+  document.getElementById('app-modal').addEventListener('click', function(e){ if(e.target === this) closeAppModal(); });
+  document.addEventListener('keydown', function(e){
+    if(e.key !== 'Escape') return;
+    if(document.getElementById('app-modal').style.display === 'flex') closeAppModal();
+    else if(document.getElementById('master-cp-modal').style.display === 'flex') closeMasterCP();
+  });
+  renderStreet();
+  applyTheme();
+  if(!storageOK()) document.getElementById('storage-banner').style.display = 'block';
+  window.addEventListener('error', function(e){ toast('⚠️ خطأ برمجي: ' + (e.message || 'غير معروف')); });
+  window.addEventListener('unhandledrejection', function(e){ toast('⚠️ خطأ: ' + (e.reason && e.reason.message || e.reason || 'غير معروف')); });
+  Traffic.init();
+})();
+</script>
+</body>
+</html>
